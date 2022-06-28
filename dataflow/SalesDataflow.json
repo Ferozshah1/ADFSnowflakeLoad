@@ -1,0 +1,92 @@
+{
+	"name": "SalesDataflow",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "MarketSalesCSV",
+						"type": "DatasetReference"
+					},
+					"name": "SalesCsvDataInput"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "STGSnowflakeTable",
+						"type": "DatasetReference"
+					},
+					"name": "StoreInSnowflake"
+				}
+			],
+			"transformations": [],
+			"scriptLines": [
+				"source(output(",
+				"          Region as string,",
+				"          Country as string,",
+				"          ItemType as string,",
+				"          SalesChannel as string,",
+				"          OrderPriority as string,",
+				"          OrderDate as date,",
+				"          OrderID as integer,",
+				"          ShipDate as date,",
+				"          UnitsSold as short,",
+				"          UnitPrice as double,",
+				"          UnitCost as double,",
+				"          TotalRevenue as double,",
+				"          TotalCost as double,",
+				"          TotalProfit as double",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false,",
+				"     dateFormats: ['MM/dd/yyyy','MM-dd-yyyy']) ~> SalesCsvDataInput",
+				"SalesCsvDataInput sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          REGION as string,",
+				"          COUNTRY as string,",
+				"          ItemType as string,",
+				"          SalesChannel as string,",
+				"          OrderPriority as string,",
+				"          OrderDate as date,",
+				"          OrderID as decimal(38,0),",
+				"          ShipDate as date,",
+				"          UnitsSold as decimal(38,0),",
+				"          UnitPrice as double,",
+				"          UnitCost as double,",
+				"          TotalRevenue as double,",
+				"          TotalCost as double,",
+				"          TotalProfit as double",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     truncate:true,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     stageInsert: true,",
+				"     mapColumn(",
+				"          REGION = Region,",
+				"          COUNTRY = Country,",
+				"          ItemType,",
+				"          SalesChannel,",
+				"          OrderPriority,",
+				"          OrderDate,",
+				"          OrderID,",
+				"          ShipDate,",
+				"          UnitsSold,",
+				"          UnitPrice,",
+				"          UnitCost,",
+				"          TotalRevenue,",
+				"          TotalCost,",
+				"          TotalProfit",
+				"     )) ~> StoreInSnowflake"
+			]
+		}
+	}
+}

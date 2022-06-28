@@ -1,0 +1,252 @@
+{
+	"name": "SalesJsonData",
+	"properties": {
+		"activities": [
+			{
+				"name": "CopyJson2Csv",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "JsonSource",
+						"storeSettings": {
+							"type": "AzureBlobStorageReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "JsonReadSettings"
+						}
+					},
+					"sink": {
+						"type": "DelimitedTextSink",
+						"storeSettings": {
+							"type": "AzureBlobStorageWriteSettings"
+						},
+						"formatSettings": {
+							"type": "DelimitedTextWriteSettings",
+							"quoteAllText": true,
+							"fileExtension": ".txt"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"path": "$['Region']"
+								},
+								"sink": {
+									"name": "Region",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Country']"
+								},
+								"sink": {
+									"name": "Country",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Item Type']"
+								},
+								"sink": {
+									"name": "ItemType",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Sales Channel']"
+								},
+								"sink": {
+									"name": "SalesChannel",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Order Priority']"
+								},
+								"sink": {
+									"name": "OrderPriority",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Order Date']"
+								},
+								"sink": {
+									"name": "OrderDate",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Order ID']"
+								},
+								"sink": {
+									"name": "OrderID",
+									"type": "Int32"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Ship Date']"
+								},
+								"sink": {
+									"name": "ShipDate",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Units Sold']"
+								},
+								"sink": {
+									"name": "UnitsSold",
+									"type": "Int32"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Unit Price']"
+								},
+								"sink": {
+									"name": "UnitPrice",
+									"type": "Double"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Unit Cost']"
+								},
+								"sink": {
+									"name": "UnitCost",
+									"type": "Double"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Total Revenue']"
+								},
+								"sink": {
+									"name": "TotalRevenue",
+									"type": "Double"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Total Cost']"
+								},
+								"sink": {
+									"name": "TotalCost",
+									"type": "Double"
+								}
+							},
+							{
+								"source": {
+									"path": "$['Total Profit']"
+								},
+								"sink": {
+									"name": "TotalProfit",
+									"type": "Double"
+								}
+							}
+						],
+						"mapComplexValuesToString": true
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "MarketSalesDataJson",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "MarketSalesCSV",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "SnowflokeStore",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [
+					{
+						"activity": "CopyJson2Csv",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "1.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "SalesDataflow",
+						"type": "DataFlowReference"
+					},
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
+					},
+					"traceLevel": "Fine"
+				}
+			},
+			{
+				"name": "Notification of Failure",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "CopyJson2Csv",
+						"dependencyConditions": [
+							"Failed"
+						]
+					},
+					{
+						"activity": "SnowflokeStore",
+						"dependencyConditions": [
+							"Failed"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "Failed",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true,
+					"parameters": {
+						"receiver": "sajanasajju5111@gmail.com"
+					}
+				}
+			}
+		],
+		"annotations": [],
+		"lastPublishTime": "2022-06-26T21:15:37Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

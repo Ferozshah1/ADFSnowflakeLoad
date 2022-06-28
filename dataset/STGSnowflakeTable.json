@@ -1,0 +1,102 @@
+{
+	"name": "STGSnowflakeTable",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "snowflakestage_1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SnowflakeTable",
+		"schema": [
+			{
+				"name": "REGION",
+				"type": "VARCHAR",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "COUNTRY",
+				"type": "VARCHAR",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "ItemType",
+				"type": "VARCHAR",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "SalesChannel",
+				"type": "VARCHAR",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "OrderPriority",
+				"type": "VARCHAR",
+				"precision": 0,
+				"scale": 0
+			},
+			{
+				"name": "OrderDate",
+				"type": "DATE",
+				"precision": 10,
+				"scale": 0
+			},
+			{
+				"name": "OrderID",
+				"type": "NUMBER",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "ShipDate",
+				"type": "DATE",
+				"precision": 10,
+				"scale": 0
+			},
+			{
+				"name": "UnitsSold",
+				"type": "NUMBER",
+				"precision": 38,
+				"scale": 0
+			},
+			{
+				"name": "UnitPrice",
+				"type": "FLOAT",
+				"precision": 15,
+				"scale": 0
+			},
+			{
+				"name": "UnitCost",
+				"type": "FLOAT",
+				"precision": 15,
+				"scale": 0
+			},
+			{
+				"name": "TotalRevenue",
+				"type": "FLOAT",
+				"precision": 15,
+				"scale": 0
+			},
+			{
+				"name": "TotalCost",
+				"type": "FLOAT",
+				"precision": 15,
+				"scale": 0
+			},
+			{
+				"name": "TotalProfit",
+				"type": "FLOAT",
+				"precision": 15,
+				"scale": 0
+			}
+		],
+		"typeProperties": {
+			"schema": "PUBLIC",
+			"table": "STG_MARKET_SALES_DATA"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

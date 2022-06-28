@@ -1,0 +1,67 @@
+{
+	"name": "MarketSalesDataJson",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "MarketSalesRecord.json",
+				"folderPath": "input",
+				"container": "datastore1"
+			}
+		},
+		"schema": {
+			"type": "object",
+			"properties": {
+				"Region": {
+					"type": "string"
+				},
+				"Country": {
+					"type": "string"
+				},
+				"Item Type": {
+					"type": "string"
+				},
+				"Sales Channel": {
+					"type": "string"
+				},
+				"Order Priority": {
+					"type": "string"
+				},
+				"Order Date": {
+					"type": "string"
+				},
+				"Order ID": {
+					"type": "integer"
+				},
+				"Ship Date": {
+					"type": "string"
+				},
+				"Units Sold": {
+					"type": "integer"
+				},
+				"Unit Price": {
+					"type": "number"
+				},
+				"Unit Cost": {
+					"type": "number"
+				},
+				"Total Revenue": {
+					"type": "number"
+				},
+				"Total Cost": {
+					"type": "number"
+				},
+				"Total Profit": {
+					"type": "number"
+				}
+			}
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

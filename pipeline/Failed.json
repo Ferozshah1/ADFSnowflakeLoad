@@ -1,0 +1,39 @@
+{
+	"name": "Failed",
+	"properties": {
+		"activities": [
+			{
+				"name": "NotifyAll",
+				"type": "WebActivity",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"url": "https://prod-33.eastus.logic.azure.com:443/workflows/bdb893ad47024fdcbeba005d0bce5e65/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=5DBKlVGwTiOD1xNn34Mv1ttbCaaN7aGt11Z3F-hB7vI",
+					"method": "POST",
+					"body": {
+						"message": "This is a custom dynamic message from your pipeline with run ID @{pipeline().RunId}. ACTIVITY FAILED. ",
+						"dataFactoryName": "@{pipeline().DataFactory}",
+						"pipelineName": "@{pipeline().Pipeline}",
+						"receiver": "@{pipeline().parameters.receiver}"
+					}
+				}
+			}
+		],
+		"parameters": {
+			"receiver": {
+				"type": "string",
+				"defaultValue": "ferozsajana@gmail.com"
+			}
+		},
+		"annotations": [],
+		"lastPublishTime": "2022-06-26T21:15:35Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}
